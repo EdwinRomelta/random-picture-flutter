@@ -1,32 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'blocs/blocs.dart';
+import 'repositories/caches/caches.dart';
+import 'repositories/networks/networks.dart';
+import 'repositories/repositories.dart';
 import 'screens/screen.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(RandomPictureApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class RandomPictureApp extends StatelessWidget {
+  final SessionService sessionService = SessionService();
+  final SessionPreference sessionPreference = SessionPreference();
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Random Picture',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primaryColor: Colors.lightBlue[800],
-        accentColor: Colors.cyan[600],
-        fontFamily: 'Montserrat',
-        buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<SessionRepository>(
+            builder: (context) =>
+                SessionRepository(sessionService, sessionPreference))
+      ],
+      child: MaterialApp(
+        title: 'Random Picture',
+        theme: ThemeData(
+          brightness: Brightness.light,
+          primaryColor: Colors.lightBlue[800],
+          accentColor: Colors.cyan[600],
+          fontFamily: 'Montserrat',
+          buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+        ),
+        onGenerateRoute: (settings) {
+          return MaterialPageRoute(builder: (_) {
+            return MultiBlocProvider(providers: [
+              BlocProvider<LoginBloc>(
+                builder: (context) => LoginBloc(RepositoryProvider.of(context)),
+              ),
+            ], child: Router.findWidget(settings));
+          });
+        },
       ),
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          default:
-            return MaterialPageRoute(builder: (_) => Home());
-        }
-      },
     );
   }
 }
 
 class Router {
-  static const home = "/home";
+  static const home = "/";
+  static const login = "/login";
+
+  static Widget findWidget(RouteSettings settings) {
+    switch (settings.name) {
+      case home:
+        return Home();
+      case login:
+        return Login();
+      default:
+        throw ("No route for ${settings.name}");
+    }
+  }
 }
