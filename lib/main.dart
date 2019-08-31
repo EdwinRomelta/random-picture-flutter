@@ -10,7 +10,7 @@ import 'screens/screen.dart';
 void main() => runApp(RandomPictureApp());
 
 class RandomPictureApp extends StatelessWidget {
-  final SessionService sessionService = SessionService();
+  final Auth0Service sessionService = Auth0Service();
   final SessionPreference sessionPreference = SessionPreference();
 
   @override

@@ -41,15 +41,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     }
     if (event is FormSubmitted) {
-      final request = Map();
-      request["email"] = event.email;
-      request["password"] = event.password;
       try {
         yield LoginLoading();
-        final user = await _userRepository.login(request);
+        final user = await _userRepository.login(event.email, event.password);
         yield LoginSuccess(user: user);
       } catch (e) {
         yield LoginFailed(error: e);
+        yield LoginInitial.initial();
       }
     }
   }

@@ -36,10 +36,11 @@ class _LoginState extends State<Login> {
                 context, Router.home, (Route<dynamic> route) => false);
           }
           if (state is LoginFailed) {
+            Scaffold.of(context).hideCurrentSnackBar();
             Scaffold.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Colors.red,
-                content: Text('Failed'),
+                content: Text(state.error),
               ),
             );
           }
