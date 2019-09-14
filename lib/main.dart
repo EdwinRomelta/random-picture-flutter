@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:random_picture_flutter/blocs/register/register_bloc.dart';
 
-import 'blocs/blocs.dart';
+import 'blocs/login/login_bloc.dart';
 import 'repositories/caches/caches.dart';
 import 'repositories/networks/networks.dart';
 import 'repositories/repositories.dart';
@@ -36,6 +37,10 @@ class RandomPictureApp extends StatelessWidget {
               BlocProvider<LoginBloc>(
                 builder: (context) => LoginBloc(RepositoryProvider.of(context)),
               ),
+              BlocProvider<RegisterBloc>(
+                builder: (context) =>
+                    RegisterBloc(RepositoryProvider.of(context)),
+              ),
             ], child: Router.findWidget(settings));
           });
         },
@@ -47,6 +52,7 @@ class RandomPictureApp extends StatelessWidget {
 class Router {
   static const home = "/";
   static const login = "/login";
+  static const register = "/register";
 
   static Widget findWidget(RouteSettings settings) {
     switch (settings.name) {
@@ -54,6 +60,8 @@ class Router {
         return Home();
       case login:
         return Login();
+      case register:
+        return Register();
       default:
         throw ("No route for ${settings.name}");
     }

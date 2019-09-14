@@ -84,14 +84,14 @@ class _LoginState extends State<Login> {
                               )
                             : Text("Login"),
                         color: Theme.of(context).accentColor,
-//                  textTheme: Theme.of(context).accentTextTheme.button,
+                        //                  textTheme: Theme.of(context).accentTextTheme.button,
                         onPressed: () {
                           if (state is LoginInitial && state.isFormValid)
                             _onLoginPressed();
                         })),
                 MaterialButton(
                   child: Text("No account yet? Create one"),
-                  onPressed: () {},
+                  onPressed: _toRegister,
                 ),
               ],
             ),
@@ -107,6 +107,13 @@ class _LoginState extends State<Login> {
     _emailController.dispose();
     _passwordController.dispose();
     _loginBloc.dispose();
+  }
+
+  _toRegister() async {
+    final userName = await Navigator.pushNamed(context, Router.register);
+    if (userName != null) {
+      _emailController.text = userName;
+    }
   }
 
   void _onEmailChange() {

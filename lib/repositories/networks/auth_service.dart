@@ -30,6 +30,22 @@ class Auth0Service {
     }
   }
 
+  Future<String> register(String userName, String email,
+      String password) async {
+    var response = await dio.post("$_BASE_URL/dbconnections/signup", data: {
+      'client_id': _CLIENT_ID,
+      'username': userName,
+      'email': email,
+      'password': password,
+      'connection': 'Username-Password-Authentication',
+    });
+    if (response.statusCode == 200) {
+      return response.data["username"];
+    } else {
+      return Future.error(response.data['message']);
+    }
+  }
+
   Future<User> profile(String token) async {
     var response = await dio.get("$_BASE_URL/userinfo",
         options: Options(

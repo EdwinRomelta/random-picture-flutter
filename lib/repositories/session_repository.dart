@@ -15,4 +15,10 @@ class SessionRepository {
     userPreference.saveUser(user);
     return user;
   }
+
+  Future<String> register(String username, String email,
+      String password) async {
+    final newUsername = await userService.register(username, email, password);
+    return newUsername;
+  }
 }
