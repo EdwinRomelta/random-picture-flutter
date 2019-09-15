@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:random_picture_flutter/blocs/home/home_bloc.dart';
 import 'package:random_picture_flutter/blocs/register/register_bloc.dart';
 
 import 'blocs/login/login_bloc.dart';
@@ -34,6 +35,9 @@ class RandomPictureApp extends StatelessWidget {
         onGenerateRoute: (settings) {
           return MaterialPageRoute(builder: (_) {
             return MultiBlocProvider(providers: [
+              BlocProvider<HomeBloc>(
+                builder: (context) => HomeBloc(RepositoryProvider.of(context)),
+              ),
               BlocProvider<LoginBloc>(
                 builder: (context) => LoginBloc(RepositoryProvider.of(context)),
               ),

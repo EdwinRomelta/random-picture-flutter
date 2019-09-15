@@ -13,8 +13,13 @@ class SessionPreference {
     return null;
   }
 
-  void saveUser(User user) async {
+  Future<void> saveUser(User user) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(_KEY, json.encode(user.toJson()));
+  }
+
+  Future<void> clearUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 }

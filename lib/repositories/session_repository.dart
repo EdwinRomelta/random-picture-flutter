@@ -9,10 +9,19 @@ class SessionRepository {
 
   SessionRepository(this.userService, this.userPreference);
 
+  Future<User> currentUser() async {
+    final user = await userPreference.getUser();
+    return user;
+  }
+
+  Future<void> clearUser() async {
+    await userPreference.clearUser();
+  }
+
   Future<User> login(String email, String password) async {
     final token = await userService.login(email, password);
     final user = await userService.profile(token);
-    userPreference.saveUser(user);
+    await userPreference.saveUser(user);
     return user;
   }
 
